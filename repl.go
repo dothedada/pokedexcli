@@ -48,6 +48,16 @@ type cliCommand struct {
 
 func getCommand() map[string]cliCommand {
 	return map[string]cliCommand{
+		"map": {
+			name:        "map",
+			description: "Shows the locations",
+			callback:    commandMap,
+		},
+		"mapb": {
+			name:        "map",
+			description: "Shows the previous locations",
+			callback:    commandMapBack,
+		},
 		"exit": {
 			name:        "exit",
 			description: "Exit the Pokedex",
