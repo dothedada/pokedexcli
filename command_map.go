@@ -1,81 +1,37 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
 )
 
-type fetchedLocations struct {
-	Count    int    `json:"count"`
-	Next     string `json:"next"`
-	Previous any    `json:"previous"`
-	Results  []struct {
-		Name string `json:"name"`
-		URL  string `json:"url"`
-	} `json:"results"`
-}
-
-var locationUrl = struct {
-	previous string
-	current  string
-	next     string
-}{
-	previous: "https://pokeapi.co/api/v2/location-area/",
-	next:     "https://pokeapi.co/api/v2/location-area/",
-}
-
-func commandMap() error {
-	res, err := http.Get(locationUrl.next)
+func commandMap(conf *config) error {
+	mapData, err := conf.client.GetShallowLocations(conf.nextURL)
 	if err != nil {
-		fmt.Println("error fetching the data")
-	}
-	defer res.Body.Close()
-
-	locations := fetchedLocations{}
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		fmt.Println("cannot load data")
-	}
-	json.Unmarshal(body, &locations)
-
-	for _, location := range locations.Results {
-		fmt.Println(location.Name)
+		return fmt.Errorf("cannot get the locations: %w", err)
 	}
 
-	if locations.Previous != nil {
-		locationUrl.previous = locations.Previous.(string)
+	for _, locationName := range mapData.Results {
+		fmt.Println(locationName.Name)
 	}
-	locationUrl.current = locationUrl.next
-	locationUrl.next = locations.Next
+
+	conf.nextURL = &mapData.Next
+	conf.prevURL = &mapData.Previous
 
 	return nil
 }
 
-func commandMapBack() error {
-	res, err := http.Get(locationUrl.previous)
+func commandMapBack(conf *config) error {
+	mapData, err := conf.client.GetShallowLocations(conf.prevURL)
 	if err != nil {
-		fmt.Println("error fetching the data")
-	}
-	defer res.Body.Close()
-
-	locations := fetchedLocations{}
-	body, err := io.ReadAll(res.Body)
-	if err != nil {
-		fmt.Println("cannot load data")
-	}
-	json.Unmarshal(body, &locations)
-
-	for _, location := range locations.Results {
-		fmt.Println(location.Name)
+		return fmt.Errorf("cannot get the locations: %w", err)
 	}
 
-	if locations.Previous != nil {
-		locationUrl.previous = locations.Previous.(string)
+	for _, locationName := range mapData.Results {
+		fmt.Println(locationName.Name)
 	}
-	locationUrl.current = locationUrl.previous
-	locationUrl.next = locations.Next
+
+	conf.nextURL = &mapData.Next
+	conf.prevURL = &mapData.Previous
 
 	return nil
 }

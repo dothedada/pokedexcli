@@ -5,9 +5,23 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/dothedada/pokemoncli/internals/pokeapi"
 )
 
-func repl() {
+type config struct {
+	prevURL *string
+	nextURL *string
+	client  pokeapi.Client
+}
+
+type cliCommand struct {
+	name        string
+	description string
+	callback    func(*config) error
+}
+
+func repl(conf *config) {
 	reader := bufio.NewScanner(os.Stdin)
 
 	for {
@@ -22,7 +36,7 @@ func repl() {
 		commandName := text[0]
 
 		if command, ok := getCommand()[commandName]; ok {
-			err := command.callback()
+			err := command.callback(conf)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -38,12 +52,6 @@ func cleanInput(text string) []string {
 	lowerTxt := strings.ToLower(text)
 	words := strings.Fields(lowerTxt)
 	return words
-}
-
-type cliCommand struct {
-	name        string
-	description string
-	callback    func() error
 }
 
 func getCommand() map[string]cliCommand {
