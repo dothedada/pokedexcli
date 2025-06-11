@@ -30,20 +30,16 @@ func (c *Cache) Get(key string) ([]byte, bool) {
 func (c *Cache) ReapLoop(interval time.Duration) {
 	ticker := time.NewTicker(interval)
 
-	go func() {
-		for {
-			select {
+	for range ticker.C {
+		c.mutex.Lock()
 
-			case t := <-ticker.C:
-				c.mutex.Lock()
-				for key, value := range c.data {
-					if value.createdAt.Add(interval).Before(t) {
-						delete(c.data, key)
-					}
-				}
+		for key, value := range c.data {
 
-				c.mutex.Unlock()
+			if value.createdAt.Before(time.Now().Add(-interval)) {
+				delete(c.data, key)
 			}
 		}
-	}()
+
+		c.mutex.Unlock()
+	}
 }

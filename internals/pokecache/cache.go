@@ -10,6 +10,6 @@ func NewCache(interval time.Duration) Cache {
 		data:  make(map[string]cacheEntry),
 		mutex: &sync.Mutex{},
 	}
-	cache.ReapLoop(interval)
+	go cache.ReapLoop(interval)
 	return cache
 }
