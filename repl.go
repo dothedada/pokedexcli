@@ -7,12 +7,14 @@ import (
 	"strings"
 
 	"github.com/dothedada/pokemoncli/internals/pokeapi"
+	"github.com/dothedada/pokemoncli/internals/pokecache"
 )
 
 type config struct {
 	prevURL *string
 	nextURL *string
 	client  pokeapi.Client
+	cache   pokecache.Cache
 }
 
 type cliCommand struct {

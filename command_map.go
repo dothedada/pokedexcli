@@ -5,7 +5,7 @@ import (
 )
 
 func commandMap(conf *config) error {
-	mapData, err := conf.client.GetShallowLocations(conf.nextURL)
+	mapData, err := conf.client.GetShallowLocations(conf.nextURL, conf.cache)
 	if err != nil {
 		return fmt.Errorf("cannot get the locations: %w", err)
 	}
@@ -21,7 +21,7 @@ func commandMap(conf *config) error {
 }
 
 func commandMapBack(conf *config) error {
-	mapData, err := conf.client.GetShallowLocations(conf.prevURL)
+	mapData, err := conf.client.GetShallowLocations(conf.prevURL, conf.cache)
 	if err != nil {
 		return fmt.Errorf("cannot get the locations: %w", err)
 	}
