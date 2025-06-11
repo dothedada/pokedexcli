@@ -46,8 +46,6 @@ func (c *Client) GetShallowLocations(
 			)
 		}
 
-		fmt.Println("NO EN CACHE")
-
 		cache.Add(url, data)
 	}
 
