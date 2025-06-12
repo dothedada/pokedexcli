@@ -7,7 +7,7 @@ func commandPokedex(conf *config, args ...string) error {
 		fmt.Println("You havent caught any Pokemon :(")
 	}
 
-	fmt.Println("Your Pokedex has:")
+	fmt.Println("Your pokedex has:")
 	for key := range conf.pokedex {
 		fmt.Println(" -", key)
 	}
