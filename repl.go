@@ -62,6 +62,11 @@ func cleanInput(text string) []string {
 
 func getCommand() map[string]cliCommand {
 	return map[string]cliCommand{
+		"inspect": {
+			name:        "inspect <Pokemon_name>",
+			description: "Try to catch the specified Pokemon",
+			callback:    commandInspect,
+		},
 		"catch": {
 			name:        "catch <Pokemon_name>",
 			description: "Try to catch the specified Pokemon",

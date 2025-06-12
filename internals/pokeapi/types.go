@@ -25,12 +25,6 @@ type PokemonData struct {
 	Height         int    `json:"height"`
 	Weight         int    `json:"weight"`
 
-	Abilities []struct {
-		Ability struct {
-			Name string `json:"name"`
-		} `json:"ability"`
-	} `json:"abilities"`
-
 	Stats []struct {
 		BaseStat int `json:"base_stat"`
 		Stat     struct {
@@ -38,8 +32,13 @@ type PokemonData struct {
 		} `json:"stat"`
 	} `json:"stats"`
 
+	Abilities []struct {
+		Ability struct {
+			Name string `json:"name"`
+		} `json:"ability"`
+	} `json:"abilities"`
+
 	Types []struct {
-		Slot int `json:"slot"`
 		Type struct {
 			Name string `json:"name"`
 		} `json:"type"`
