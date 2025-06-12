@@ -24,6 +24,10 @@ func fetchData(url string, client http.Client) ([]byte, error) {
 	}
 	defer res.Body.Close()
 
+	if res.StatusCode > 299 {
+		return []byte{}, fmt.Errorf("Cannot find the searched item")
+	}
+
 	data, err := io.ReadAll(res.Body)
 	if err != nil {
 		return []byte{}, fmt.Errorf(

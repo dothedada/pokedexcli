@@ -16,12 +16,5 @@ type encountersData struct {
 		Pokemon struct {
 			Name string `json:"name"`
 		} `json:"pokemon"`
-		VersionDetails []struct {
-			EncounterDetails []struct {
-				Chance   int `json:"chance"`
-				MaxLevel int `json:"max_level"`
-				MinLevel int `json:"min_level"`
-			} `json:"encounter_details"`
-		} `json:"version_details"`
 	} `json:"pokemon_encounters"`
 }

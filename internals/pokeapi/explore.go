@@ -25,7 +25,7 @@ func (c *Client) ExploreLocation(
 		data, err = fetchData(url, c.httpClient)
 		if err != nil {
 			return encountersData{}, fmt.Errorf(
-				"Cannot fetch data for location '%s': %w",
+				"Unable to fetch the data for location '%s': %w",
 				locationName,
 				err,
 			)

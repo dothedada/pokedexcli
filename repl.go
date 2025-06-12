@@ -20,7 +20,7 @@ type config struct {
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(conf *config, param string) error
+	callback    func(conf *config, param ...string) error
 }
 
 func repl(conf *config) {
@@ -36,14 +36,14 @@ func repl(conf *config) {
 		}
 
 		commandName := text[0]
+		var args []string
 
-		var commandParam string
 		if len(text) > 1 {
-			commandParam = text[1]
+			args = text[1:]
 		}
 
 		if command, ok := getCommand()[commandName]; ok {
-			err := command.callback(conf, commandParam)
+			err := command.callback(conf, args...)
 			if err != nil {
 				fmt.Println(err)
 			}

@@ -4,9 +4,9 @@ import (
 	"fmt"
 )
 
-func commandExplore(conf *config, param string) error {
+func commandExplore(conf *config, param ...string) error {
 
-	locationData, err := conf.client.ExploreLocation(param, conf.cache)
+	locationData, err := conf.client.ExploreLocation(param[0], conf.cache)
 	if err != nil {
 		return err
 	}

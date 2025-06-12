@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-func commandMap(conf *config, param string) error {
+func commandMap(conf *config, param ...string) error {
 	mapData, err := conf.client.GetLocations(conf.nextURL, conf.cache)
 	if err != nil {
 		return fmt.Errorf("cannot get the locations: %w", err)
@@ -20,7 +20,7 @@ func commandMap(conf *config, param string) error {
 	return nil
 }
 
-func commandMapBack(conf *config, param string) error {
+func commandMapBack(conf *config, param ...string) error {
 	mapData, err := conf.client.GetLocations(conf.prevURL, conf.cache)
 	if err != nil {
 		return fmt.Errorf("cannot get the locations: %w", err)
