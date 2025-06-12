@@ -3,13 +3,11 @@ package pokeapi
 import (
 	"encoding/json"
 	"fmt"
-	"io"
-	"net/http"
 
 	"github.com/dothedada/pokemoncli/internals/pokecache"
 )
 
-func (c *Client) GetShallowLocations(
+func (c *Client) GetLocations(
 	pageUrl *string,
 	cache pokecache.Cache,
 ) (shallowLocations, error) {
@@ -19,38 +17,21 @@ func (c *Client) GetShallowLocations(
 		url = *pageUrl
 	}
 
+	var data []byte
+	var err error
+
 	data, isCached := cache.Get(url)
 	if isCached == false {
-		req, err := http.NewRequest("GET", url, nil)
+		data, err = fetchData(url, c.httpClient)
 		if err != nil {
-			return shallowLocations{}, fmt.Errorf(
-				"Cannot create the http request: %w",
-				err,
-			)
-		}
-
-		res, err := c.httpClient.Do(req)
-		if err != nil {
-			return shallowLocations{}, fmt.Errorf(
-				"Cannot create the response element: %w",
-				err,
-			)
-		}
-		defer res.Body.Close()
-
-		data, err = io.ReadAll(res.Body)
-		if err != nil {
-			return shallowLocations{}, fmt.Errorf(
-				"Cannot create the data element: %w",
-				err,
-			)
+			return shallowLocations{}, err
 		}
 
 		cache.Add(url, data)
 	}
 
 	var result shallowLocations
-	err := json.Unmarshal(data, &result)
+	err = json.Unmarshal(data, &result)
 	if err != nil {
 		return shallowLocations{}, fmt.Errorf(
 			"Cannot unmarshal the data: %w",
