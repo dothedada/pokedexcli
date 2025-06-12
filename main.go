@@ -7,8 +7,11 @@ import (
 
 func main() {
 	client := pokeapi.NewClient(pokeapi.Timeout, pokecache.CacheTime)
+	pokedex := map[string]pokeapi.PokemonData{}
+
 	conf := &config{
-		client: client,
+		client:  client,
+		pokedex: pokedex,
 	}
 
 	repl(conf)
