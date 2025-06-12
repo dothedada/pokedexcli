@@ -3,24 +3,16 @@ package pokeapi
 import (
 	"encoding/json"
 	"fmt"
-
-	"github.com/dothedada/pokemoncli/internals/pokecache"
 )
 
-func (c *Client) ExploreLocation(
-	locationName string,
-	cache pokecache.Cache,
-) (encountersData, error) {
+func (c *Client) ExploreLocation(locationName string) (encountersData, error) {
 
-	if locationName == "" {
-		return encountersData{}, fmt.Errorf("Must provide the locatio name")
-	}
 	url := baseUrl + "/location-area/" + locationName
 
 	var data []byte
 	var err error
 
-	data, isCached := cache.Get(url)
+	data, isCached := c.cache.Get(url)
 	if isCached == false {
 		data, err = fetchData(url, c.httpClient)
 		if err != nil {
@@ -31,7 +23,7 @@ func (c *Client) ExploreLocation(
 			)
 		}
 
-		cache.Add(url, data)
+		c.cache.Add(url, data)
 	}
 
 	var result encountersData

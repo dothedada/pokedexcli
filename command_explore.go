@@ -4,9 +4,12 @@ import (
 	"fmt"
 )
 
-func commandExplore(conf *config, param ...string) error {
+func commandExplore(conf *config, params ...string) error {
+	if len(params) == 0 {
+		return fmt.Errorf("Must provide a location name")
+	}
 
-	locationData, err := conf.client.ExploreLocation(param[0], conf.cache)
+	locationData, err := conf.client.ExploreLocation(params[0])
 	if err != nil {
 		return err
 	}

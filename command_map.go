@@ -5,7 +5,7 @@ import (
 )
 
 func commandMap(conf *config, param ...string) error {
-	mapData, err := conf.client.GetLocations(conf.nextURL, conf.cache)
+	mapData, err := conf.client.GetLocations(conf.nextURL)
 	if err != nil {
 		return fmt.Errorf("cannot get the locations: %w", err)
 	}
@@ -21,7 +21,7 @@ func commandMap(conf *config, param ...string) error {
 }
 
 func commandMapBack(conf *config, param ...string) error {
-	mapData, err := conf.client.GetLocations(conf.prevURL, conf.cache)
+	mapData, err := conf.client.GetLocations(conf.prevURL)
 	if err != nil {
 		return fmt.Errorf("cannot get the locations: %w", err)
 	}

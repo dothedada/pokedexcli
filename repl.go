@@ -7,14 +7,12 @@ import (
 	"strings"
 
 	"github.com/dothedada/pokemoncli/internals/pokeapi"
-	"github.com/dothedada/pokemoncli/internals/pokecache"
 )
 
 type config struct {
 	prevURL *string
 	nextURL *string
 	client  pokeapi.Client
-	cache   pokecache.Cache
 }
 
 type cliCommand struct {
@@ -63,19 +61,24 @@ func cleanInput(text string) []string {
 
 func getCommand() map[string]cliCommand {
 	return map[string]cliCommand{
+		"catch": {
+			name:        "catch <Pokemon_name>",
+			description: "Try to catch the specified Pokemon",
+			callback:    commandCatch,
+		},
 		"explore": {
-			name:        "explore",
-			description: "Shows the pokemons in a specific area",
+			name:        "explore <location_name>",
+			description: "Shows the pokemons in the location name",
 			callback:    commandExplore,
 		},
 		"map": {
 			name:        "map",
-			description: "Shows the locations",
+			description: "Shows the next page of locations",
 			callback:    commandMap,
 		},
 		"mapb": {
 			name:        "map",
-			description: "Shows the previous locations",
+			description: "Shows the previous page of locations",
 			callback:    commandMapBack,
 		},
 		"exit": {
